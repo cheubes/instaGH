@@ -1,0 +1,8 @@
+username: user              # (instagram user)
+password: password          # (instagram password)
+target_list: ['user1', 'user2', 'user3', 'user4']
+do_follow_likers: True
+do_follow_followers: True
+do_follow_following: True
+do_unfollow: True
+dont_include_list: ['user1', 'user2', 'user3', 'user4']
