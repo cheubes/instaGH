@@ -13,6 +13,7 @@ class Parameters(NamedTuple):
     do_follow_following: bool
     do_unfollow: bool
     dont_include: list
+    headless_browser: bool
 
 def load_parameters():
 
@@ -30,7 +31,8 @@ def load_parameters():
     parameters = Parameters(data['username'], data['password'],
                             data['target_list'],
                             data['do_follow_likers'], data['do_follow_followers'], data['do_follow_following'], data['do_unfollow'],
-                            data['dont_include_list'])
+                            data['dont_include_list'],
+                            data['headless_browser'])
 
     print('\t🧔 %s' % parameters.username)
     print('\t🎯 %s' % parameters.targets)
@@ -38,6 +40,7 @@ def load_parameters():
     print('\t%s Follow followers' % ('✅' if parameters.do_follow_followers else '❌'))
     print('\t%s Follow following' % ('✅' if parameters.do_follow_following else '❌'))
     print('\t%s Unfollow' % ('✅' if parameters.do_unfollow else '❌'))
+    print('\t%s Headless browser' % ('✅' if parameters.headless_browser else '❌'))
 
     print('\n')
 
