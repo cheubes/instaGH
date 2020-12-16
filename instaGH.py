@@ -38,3 +38,12 @@ with smart_run(session):
                             randomize=True,
                             sleep_delay=600,
                             interact=False)
+
+    ## Follow following
+    if parameters.do_follow_following :
+        session.follow_user_following(
+                            parameters.targets,
+                            amount=200,
+                            randomize=True,
+                            sleep_delay=600,
+                            interact=False)
