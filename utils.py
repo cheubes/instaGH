@@ -1,6 +1,7 @@
 import argparse
 import os
 import yaml
+import random
 from typing import NamedTuple
 
 
@@ -29,7 +30,7 @@ def load_parameters():
     data = yaml.safe_load(open('%s/%s' % (current_path, args.data_file)))
 
     parameters = Parameters(data['username'], data['password'],
-                            data['target_list'],
+                            random.sample(data['target_list'], 3),
                             data['do_follow_likers'], data['do_follow_followers'], data['do_follow_following'], data['do_unfollow'],
                             data['dont_include_list'],
                             data['headless_browser'])
