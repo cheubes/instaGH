@@ -6,11 +6,15 @@ from instapy import smart_run
 
 parameters = load_parameters()
 
+sleep_delay = 600
+
 # get an InstaPy session!
 session = InstaPy(
                 username=parameters.username,
                 password=parameters.password,
-                headless_browser=parameters.headless_browser)
+                headless_browser=parameters.headless_browser,
+                bypass_security_challenge_using='email',
+	            want_check_browser=True)
 
 
 with smart_run(session):
@@ -20,6 +24,7 @@ with smart_run(session):
     session.set_do_comment(enabled=False, percentage=0)
     session.set_do_follow(enabled=True, percentage=100, times=1)
     session.set_dont_include(parameters.dont_include)
+    session.set_skip_users(skip_private=True, skip_no_profile_pic=True, skip_business=True)
 
     # Follow likers
     if parameters.do_follow_likers :
@@ -28,7 +33,7 @@ with smart_run(session):
                             photos_grab_amount=3,
                             follow_likers_per_photo=100,
                             randomize=True,
-                            sleep_delay=600,
+                            sleep_delay=sleep_delay,
                             interact=False)
 
     # Follow followers
@@ -37,7 +42,7 @@ with smart_run(session):
                             parameters.targets,
                             amount=200,
                             randomize=True,
-                            sleep_delay=600,
+                            sleep_delay=sleep_delay,
                             interact=False)
 
     # Follow following
@@ -46,7 +51,7 @@ with smart_run(session):
                             parameters.targets,
                             amount=200,
                             randomize=True,
-                            sleep_delay=600,
+                            sleep_delay=sleep_delay,
                             interact=False)
 
     # Unfollow
@@ -55,4 +60,4 @@ with smart_run(session):
                             allFollowing=True,
                             style="FIFO",
                             unfollow_after=24*60*60,
-                            sleep_delay=600)
+                            sleep_delay=sleep_delay)
