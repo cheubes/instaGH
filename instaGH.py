@@ -18,13 +18,23 @@ with smart_run(session):
     # general settings
     session.set_do_like(enabled=False, percentage=0)
     session.set_do_comment(enabled=False, percentage=0)
+    session.set_do_follow(enabled=True, percentage=100, times=1)
 
     ## Follow likers
-    session.set_do_follow(enabled=True, percentage=100, times=1)
-    session.follow_likers(
-                        parameters.targets,
-                        photos_grab_amount=3,
-                        follow_likers_per_photo=100,
-                        randomize=True,
-                        sleep_delay=600,
-                        interact=False)
+    if parameters.do_follow_likers :
+        session.follow_likers(
+                            parameters.targets,
+                            photos_grab_amount=3,
+                            follow_likers_per_photo=100,
+                            randomize=True,
+                            sleep_delay=600,
+                            interact=False)
+
+    ## Follow followers
+    if parameters.do_follow_followers :
+        session.follow_user_followers(
+                            parameters.targets,
+                            amount=200,
+                            randomize=True,
+                            sleep_delay=600,
+                            interact=False)
