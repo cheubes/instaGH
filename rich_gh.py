@@ -1,5 +1,7 @@
 import logging
 
+from sys import exit as clean_exit
+
 from utils import *
 
 from instapy import InstaPy
@@ -24,11 +26,30 @@ session = InstaPy(
                 show_logs=False)
 
 with RichLogging([logging.getLogger('__main__'), logging.getLogger(parameters.username)]) as rl:
-    with smart_run(session):
-
+    try:
         # general settings
         session.set_do_like(enabled=False, percentage=0)
         session.set_do_comment(enabled=False, percentage=0)
         session.set_do_follow(enabled=True, percentage=100, times=1)
         session.set_dont_include(parameters.dont_include)
         session.set_skip_users(skip_private=True, skip_no_profile_pic=True, skip_business=True)
+        with rl.console.status('Login...', spinner='earth'):
+            session.login()
+    except NoSuchElementException:
+        # The problem is with a change in IG page layout
+        log_file = "{}.html".format(time.strftime("%Y%m%d-%H%M%S"))
+        file_path = os.path.join(gettempdir(), log_file)
+
+        with open(file_path, "wb") as fp:
+            fp.write(session.browser.page_source.encode("utf-8"))
+
+        print(
+            "{0}\nIf raising an issue, "
+            "please also upload the file located at:\n{1}\n{0}".format(
+                "*" * 70, file_path
+            )
+        )
+    except KeyboardInterrupt:
+        clean_exit("You have exited successfully.")
+    finally:
+        session.end(threaded_session=False)

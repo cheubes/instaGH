@@ -5,6 +5,7 @@ console = Console()
 
 class RichLogging:
     def __init__(self, loggers):
+        self.console = console
         filter_ = ListenFilter()
         for logger in loggers:
             logger.setLevel(logging.DEBUG)
