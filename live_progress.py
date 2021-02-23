@@ -17,7 +17,7 @@ rich_filter = RichLogFilter(rich_dashboard, [logging.getLogger('__main__'), logg
 
 with Live(rich_dashboard.dashboard_table, console=rich_dashboard.console, refresh_per_second=10) as live:
 
-    # get an InstaPy session!
+    # get an InstaPy session
     session = InstaPy(
         username=parameters.username,
         password=parameters.password,
@@ -43,11 +43,11 @@ with Live(rich_dashboard.dashboard_table, console=rich_dashboard.console, refres
         # Unfollow
         rich_dashboard.overall_task.add_row(rich_dashboard.unfollow_progress)
         if parameters.do_unfollow :
-            session.unfollow_users(amount=unfollow_amount,
+            session.unfollow_users(amount=parameters.unfollow_amount,
                                 allFollowing=True,
                                 style="FIFO",
                                 unfollow_after=24*60*60,
-                                sleep_delay=sleep_delay)
+                                sleep_delay=parameters.sleep_delay)
 
 
     except Exception as e:
