@@ -2,7 +2,6 @@ import logging
 from time import sleep
 from sys import exit as clean_exit
 
-from rich.console import Console
 from rich.live import Live
 
 from instapy import InstaPy
@@ -11,7 +10,7 @@ from rich_dashboard import RichDashboard
 from rich_log_filter import RichLogFilter
 
 parameters = Parameters.load_from_args()
-rich_dashboard = RichDashboard(Console(), parameters)
+rich_dashboard = RichDashboard(parameters)
 rich_filter = RichLogFilter(rich_dashboard, [logging.getLogger('__main__'), logging.getLogger(parameters.username)])
 
 with Live(rich_dashboard.dashboard_table, console=rich_dashboard.console, refresh_per_second=10) as live:
@@ -39,7 +38,7 @@ with Live(rich_dashboard.dashboard_table, console=rich_dashboard.console, refres
             session.login()
 
         # Unfollow
-        rich_dashboard.overall_task_table.add_row(rich_dashboard.unfollow_progress)
+        rich_dashboard.progress_table.add_row(rich_dashboard.unfollow_progress)
         if parameters.do_unfollow :
             session.unfollow_users(amount=parameters.unfollow_amount,
                                 allFollowing=True,
