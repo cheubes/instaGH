@@ -6,32 +6,25 @@ from rich.progress import Progress, SpinnerColumn, BarColumn, TextColumn
 from rich.table import Table
 from rich.text import Text
 
+from const import Const
+
 class RichDashboard:
+
+    C = Const()
     console = None
     dashboard_table = None
     unfollow_progress = None
     unfollow_job = None
     progress_table = None
+    progress_bars = {}
 
     def __init__(self, parameters):
         self.console = Console()
-
-        self.unfollow_progress = Progress(
-            "{task.description}",
-            SpinnerColumn(),
-            BarColumn(),
-            TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
-        )
-        self.unfollow_job = self.unfollow_progress.add_task("Unfollow", total=parameters.unfollow_amount)
-        # follow_likers_job = job_progress.add_task("Follow likers", total=follow_likers_amount)
-
         self.progress_table = Table.grid()
-
         self.dashboard_table = Table.grid()
         self.dashboard_table.add_row(
             Panel.fit(str(parameters), title="Parameters", border_style="green", padding=(1, 1)),
-            Panel.fit(self.progress_table, title="Progress", border_style="green", padding=(1, 1)),
-            # Panel.fit(job_progress, title="[b]Jobs", border_style="red", padding=(1, 1)),
+            Panel.fit(self.progress_table, title="Progress", border_style="green", padding=(1, 1))
         )
 
     @contextmanager
@@ -40,3 +33,11 @@ class RichDashboard:
         self.progress_table.add_row(step_text)
         yield
         step_text.append(' ✅')
+
+    @contextmanager
+    def progress_step(self, step_key, step_name, total):
+        step_progress = Progress("{task.description}", SpinnerColumn(), BarColumn(), TextColumn("[progress.percentage]{task.percentage:>3.0f}%"))
+        step_job = step_progress.add_task(step_name, total=total)
+        self.progress_bars[step_key] = {self.C.PROGRESS_KEY:step_progress, self.C.JOB_KEY:step_job}
+        self.progress_table.add_row(step_progress)
+        yield

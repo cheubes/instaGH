@@ -1,14 +1,15 @@
 import logging
-from time import sleep
 from sys import exit as clean_exit
 
 from rich.live import Live
-
 from instapy import InstaPy
+
+from const import Const
 from parameters import Parameters
 from rich_dashboard import RichDashboard
 from rich_log_filter import RichLogFilter
 
+C = Const()
 parameters = Parameters.load_from_args()
 rich_dashboard = RichDashboard(parameters)
 rich_filter = RichLogFilter(rich_dashboard, [logging.getLogger('__main__'), logging.getLogger(parameters.username)])
@@ -38,13 +39,13 @@ with Live(rich_dashboard.dashboard_table, console=rich_dashboard.console, refres
             session.login()
 
         # Unfollow
-        rich_dashboard.progress_table.add_row(rich_dashboard.unfollow_progress)
         if parameters.do_unfollow :
-            session.unfollow_users(amount=parameters.unfollow_amount,
-                                allFollowing=True,
-                                style="FIFO",
-                                unfollow_after=24*60*60,
-                                sleep_delay=parameters.sleep_delay)
+            with rich_dashboard.progress_step(C.UNFOLLOW_STEP_KEY, 'Unfollow', parameters.unfollow_amount):
+                session.unfollow_users(amount=parameters.unfollow_amount,
+                                    allFollowing=True,
+                                    style="FIFO",
+                                    unfollow_after=24*60*60,
+                                    sleep_delay=parameters.sleep_delay)
 
     except Exception as e:
         mainLogger.exception('', e)
