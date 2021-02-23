@@ -9,50 +9,30 @@ from rich.text import Text
 from instapy import InstaPy
 from utils import *
 from rich_dashboard import RichDashboard
+from rich_log_filter import RichLogFilter
 
-unfollow_amount = 3
+unfollow_amount = 2
 photos_grab_amount = 1
-follow_likers_per_photo = 3
+follow_likers_per_photo = 2
 follow_likers_amount = photos_grab_amount * follow_likers_per_photo
 
 parameters = load_parameters()
 sleep_delay = 600
 
 rich_dashboard = RichDashboard(Console(), parameters, unfollow_amount)
+rich_filter = RichLogFilter(rich_dashboard, [logging.getLogger('__main__'), logging.getLogger(parameters.username)])
 
-# get an InstaPy session!
-session = InstaPy(
-                username=parameters.username,
-                password=parameters.password,
-                headless_browser=parameters.headless_browser,
-                bypass_security_challenge_using='email',
-	            want_check_browser=True,
-                show_logs=False)
 
 with Live(rich_dashboard.dashboard_table, console=rich_dashboard.console, refresh_per_second=10) as live:
 
-    class LogFilter(logging.Filter):
-        console = None
-        def __init__(self, console):
-            self.console = console
-        def do_filter(self, msg):
-            if msg.startswith('Ongoing Unfollow'):
-                completed = int(msg.split('[')[1].split('/')[0])
-                rich_dashboard.unfollow_progress.update(rich_dashboard.unfollow_job, completed=completed)
-        def filter(self, record):
-            self.console.log('Filtered: ', record.getMessage())
-            self.do_filter(record.getMessage())
-            return False
-
-    filter_ = LogFilter(rich_dashboard.console)
-
-    mainLogger = logging.getLogger('__main__')
-    mainLogger.setLevel(logging.DEBUG)
-    mainLogger.addFilter(filter_)
-
-    instaPyLogger = logging.getLogger(parameters.username)
-    instaPyLogger.setLevel(logging.DEBUG)
-    instaPyLogger.addFilter(filter_)
+    # get an InstaPy session!
+    session = InstaPy(
+        username=parameters.username,
+        password=parameters.password,
+        headless_browser=parameters.headless_browser,
+        bypass_security_challenge_using='email',
+        want_check_browser=True,
+        show_logs=False)
 
     try:
         # general settings
