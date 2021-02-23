@@ -9,7 +9,7 @@ class RichDashboard:
     unfollow_job = None
     overall_task_table = None
 
-    def __init__(self, console, parameters, unfollow_amount):
+    def __init__(self, console, parameters):
         self.console = console
 
         self.unfollow_progress = Progress(
@@ -18,7 +18,7 @@ class RichDashboard:
             BarColumn(),
             TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
         )
-        self.unfollow_job = self.unfollow_progress.add_task("Unfollow", total=unfollow_amount)
+        self.unfollow_job = self.unfollow_progress.add_task("Unfollow", total=parameters.unfollow_amount)
         # follow_likers_job = job_progress.add_task("Follow likers", total=follow_likers_amount)
 
         self.overall_task = Table.grid()

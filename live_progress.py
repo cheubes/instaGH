@@ -7,21 +7,13 @@ from rich.live import Live
 from rich.text import Text
 
 from instapy import InstaPy
-from utils import *
+from parameters import Parameters
 from rich_dashboard import RichDashboard
 from rich_log_filter import RichLogFilter
 
-unfollow_amount = 2
-photos_grab_amount = 1
-follow_likers_per_photo = 2
-follow_likers_amount = photos_grab_amount * follow_likers_per_photo
-
-parameters = load_parameters()
-sleep_delay = 600
-
-rich_dashboard = RichDashboard(Console(), parameters, unfollow_amount)
+parameters = Parameters.load_from_args()
+rich_dashboard = RichDashboard(Console(), parameters)
 rich_filter = RichLogFilter(rich_dashboard, [logging.getLogger('__main__'), logging.getLogger(parameters.username)])
-
 
 with Live(rich_dashboard.dashboard_table, console=rich_dashboard.console, refresh_per_second=10) as live:
 
