@@ -14,7 +14,7 @@ parameters = Parameters.load_from_args()
 rich_dashboard = RichDashboard(parameters)
 rich_filter = RichLogFilter(rich_dashboard, [logging.getLogger(parameters.username)])
 
-with Live(rich_dashboard.dashboard_table, console=rich_dashboard.console, refresh_per_second=10) as live:
+with Live(rich_dashboard.dashboard_table, console=rich_dashboard.console, refresh_per_second=10):
 
     # get an InstaPy session
     with rich_dashboard.log_step('Begin session'):
@@ -43,14 +43,14 @@ with Live(rich_dashboard.dashboard_table, console=rich_dashboard.console, refres
             with rich_dashboard.progress_step(C.UNFOLLOW_STEP_KEY, 'Unfollow', parameters.unfollow_amount):
                 session.unfollow_users(amount=parameters.unfollow_amount,
                                     allFollowing=True,
-                                    style="FIFO",
+                                    style='FIFO',
                                     unfollow_after=24*60*60,
                                     sleep_delay=parameters.sleep_delay)
 
     except Exception:
         rich_filter.logger.exception('Exception catched')
     except KeyboardInterrupt:
-        clean_exit("You have exited successfully.")
+        clean_exit('You have exited successfully.')
     finally:
         with rich_dashboard.log_step('End session'):
             session.end(threaded_session=False)
