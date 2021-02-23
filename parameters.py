@@ -29,7 +29,7 @@ class Parameters(NamedTuple):
         self = Parameters(
             data['username'],
             data['password'],
-            random.sample(data['target_list'], 2),
+            random.sample(data['target_list'], data['target_size']),
             data['do_follow_likers'], data['do_follow_followers'], data['do_follow_following'], data['do_unfollow'],
             data['dont_include_list'],
             data['headless_browser'],

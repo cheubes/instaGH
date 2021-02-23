@@ -1,6 +1,7 @@
 username: user              # (instagram user)
 password: password          # (instagram password)
 target_list: ['user1', 'user2', 'user3', 'user4']
+target_size: 2
 do_follow_likers: True
 do_follow_followers: True
 do_follow_following: True
@@ -8,6 +9,6 @@ do_unfollow: True
 dont_include_list: ['user1', 'user2', 'user3', 'user4']
 headless_browser: True
 unfollow_amount: 200
-photos_grab_amount: 3
-follow_likers_per_photo: 100
+photos_grab_amount: 5
+follow_likers_per_photo: 20
 sleep_delay: 600
