@@ -11,6 +11,9 @@ class Const(object):
     def UNFOLLOW_STEP_KEY():
         return 'unfollow_step'
     @constant
+    def FOLLOW_STEP_KEY():
+        return 'follow_likers_step'
+    @constant
     def PROGRESS_KEY():
         return 'progress'
     @constant

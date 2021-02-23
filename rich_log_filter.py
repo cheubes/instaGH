@@ -18,11 +18,23 @@ class RichLogFilter(logging.Filter):
             logger.addFilter(self)
 
     def do_filter(self, msg):
-        if msg.startswith('Ongoing Unfollow'):
+        if msg.startswith('Ongoing Unfollow') :
             completed = int(msg.split('[')[1].split('/')[0])
             unfollow_progress = self.rich_dashboard.progress_bars[self.C.UNFOLLOW_STEP_KEY][self.C.PROGRESS_KEY]
             unfollow_job = self.rich_dashboard.progress_bars[self.C.UNFOLLOW_STEP_KEY][self.C.JOB_KEY]
             unfollow_progress.update(unfollow_job, completed=completed)
+        if msg.startswith('Total Follow') :
+            follow_progress = self.rich_dashboard.progress_bars[self.C.FOLLOW_STEP_KEY][self.C.PROGRESS_KEY]
+            follow_job = self.rich_dashboard.progress_bars[self.C.FOLLOW_STEP_KEY][self.C.JOB_KEY]
+            follow_progress.advance(follow_job)
+        if msg.find('Not a valid user') >= 0 :
+            follow_progress = self.rich_dashboard.progress_bars[self.C.FOLLOW_STEP_KEY][self.C.PROGRESS_KEY]
+            follow_job = self.rich_dashboard.progress_bars[self.C.FOLLOW_STEP_KEY][self.C.JOB_KEY]
+            follow_progress.advance(follow_job)
+        if msg.find('has already been followed') >= 0 :
+            follow_progress = self.rich_dashboard.progress_bars[self.C.FOLLOW_STEP_KEY][self.C.PROGRESS_KEY]
+            follow_job = self.rich_dashboard.progress_bars[self.C.FOLLOW_STEP_KEY][self.C.JOB_KEY]
+            follow_progress.advance(follow_job)
 
     def filter(self, record):
         self.logger.handle(record)

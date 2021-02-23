@@ -46,6 +46,15 @@ with Live(rich_dashboard.dashboard_table, console=rich_dashboard.console, refres
                                     style='FIFO',
                                     unfollow_after=24*60*60,
                                     sleep_delay=parameters.sleep_delay)
+        # Follow likers
+        if parameters.do_follow_likers :
+            with rich_dashboard.progress_step(C.FOLLOW_STEP_KEY, 'Follow likers', parameters.photos_grab_amount * parameters.follow_likers_per_photo * len(parameters.targets)):
+                session.follow_likers(parameters.targets,
+                                    photos_grab_amount=parameters.photos_grab_amount,
+                                    follow_likers_per_photo=parameters.follow_likers_per_photo,
+                                    randomize=True,
+                                    sleep_delay=parameters.sleep_delay,
+                                    interact=False)
 
     except Exception:
         rich_filter.logger.exception('Exception catched')

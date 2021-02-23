@@ -17,7 +17,7 @@ class Parameters(NamedTuple):
     unfollow_amount: int
     photos_grab_amount: int
     follow_likers_per_photo: int
-    sleep_delay: int # 600
+    sleep_delay: int
 
     def load_from_args():
         parser = argparse.ArgumentParser()
@@ -29,7 +29,7 @@ class Parameters(NamedTuple):
         self = Parameters(
             data['username'],
             data['password'],
-            random.sample(data['target_list'], 3),
+            random.sample(data['target_list'], 2),
             data['do_follow_likers'], data['do_follow_followers'], data['do_follow_following'], data['do_unfollow'],
             data['dont_include_list'],
             data['headless_browser'],
