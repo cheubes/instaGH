@@ -1,6 +1,9 @@
+from contextlib import contextmanager
+
 from rich.panel import Panel
 from rich.progress import Progress, SpinnerColumn, BarColumn, TextColumn
 from rich.table import Table
+from rich.text import Text
 
 class RichDashboard:
     console = None
@@ -21,11 +24,18 @@ class RichDashboard:
         self.unfollow_job = self.unfollow_progress.add_task("Unfollow", total=parameters.unfollow_amount)
         # follow_likers_job = job_progress.add_task("Follow likers", total=follow_likers_amount)
 
-        self.overall_task = Table.grid()
+        self.overall_task_table = Table.grid()
 
         self.dashboard_table = Table.grid()
         self.dashboard_table.add_row(
             Panel.fit(str(parameters), title="Parameters", border_style="green", padding=(1, 1)),
-            Panel.fit(self.overall_task, title="Overall Progress", border_style="green", padding=(1, 1)),
+            Panel.fit(self.overall_task_table, title="Overall Progress", border_style="green", padding=(1, 1)),
             # Panel.fit(job_progress, title="[b]Jobs", border_style="red", padding=(1, 1)),
         )
+
+    @contextmanager
+    def log_step(self, step_name):
+        step_text = Text(step_name + ' ... ')
+        self.overall_task_table.add_row(step_text)
+        yield
+        step_text.append(' ✅')
