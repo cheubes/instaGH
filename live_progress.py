@@ -12,7 +12,7 @@ from rich_log_filter import RichLogFilter
 C = Const()
 parameters = Parameters.load_from_args()
 rich_dashboard = RichDashboard(parameters)
-rich_filter = RichLogFilter(rich_dashboard, [logging.getLogger('__main__'), logging.getLogger(parameters.username)])
+rich_filter = RichLogFilter(rich_dashboard, [logging.getLogger(parameters.username)])
 
 with Live(rich_dashboard.dashboard_table, console=rich_dashboard.console, refresh_per_second=10) as live:
 
@@ -47,8 +47,8 @@ with Live(rich_dashboard.dashboard_table, console=rich_dashboard.console, refres
                                     unfollow_after=24*60*60,
                                     sleep_delay=parameters.sleep_delay)
 
-    except Exception as e:
-        mainLogger.exception('', e)
+    except Exception:
+        rich_filter.logger.exception('Exception catched')
     except KeyboardInterrupt:
         clean_exit("You have exited successfully.")
     finally:
