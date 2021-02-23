@@ -2,43 +2,23 @@ import logging
 from time import sleep
 from sys import exit as clean_exit
 
+from rich.console import Console
 from rich.live import Live
-from rich.panel import Panel
-from rich.progress import Progress, SpinnerColumn, BarColumn, TextColumn
-from rich.table import Table
 from rich.text import Text
 
 from instapy import InstaPy
 from utils import *
-from rich_logging import RichLogging
+from rich_dashboard import RichDashboard
 
-unfollow_amount = 2
+unfollow_amount = 3
 photos_grab_amount = 1
-follow_likers_per_photo = 100
+follow_likers_per_photo = 3
 follow_likers_amount = photos_grab_amount * follow_likers_per_photo
 
 parameters = load_parameters()
-
 sleep_delay = 600
 
-
-unfollow_progress = Progress(
-    "{task.description}",
-    SpinnerColumn(),
-    BarColumn(),
-    TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
-)
-unfollow_job = unfollow_progress.add_task("Unfollow", total=unfollow_amount)
-# follow_likers_job = job_progress.add_task("Follow likers", total=follow_likers_amount)
-
-overall_task = Table.grid()
-
-dashboard_table = Table.grid()
-dashboard_table.add_row(
-    Panel.fit(str(parameters), title="Parameters", border_style="green", padding=(1, 1)),
-    Panel.fit(overall_task, title="Overall Progress", border_style="green", padding=(1, 1)),
-    # Panel.fit(job_progress, title="[b]Jobs", border_style="red", padding=(1, 1)),
-)
+rich_dashboard = RichDashboard(Console(), parameters, unfollow_amount)
 
 # get an InstaPy session!
 session = InstaPy(
@@ -49,9 +29,7 @@ session = InstaPy(
 	            want_check_browser=True,
                 show_logs=False)
 
-
-
-with Live(dashboard_table, refresh_per_second=10) as live:
+with Live(rich_dashboard.dashboard_table, console=rich_dashboard.console, refresh_per_second=10) as live:
 
     class LogFilter(logging.Filter):
         console = None
@@ -60,12 +38,13 @@ with Live(dashboard_table, refresh_per_second=10) as live:
         def do_filter(self, msg):
             if msg.startswith('Ongoing Unfollow'):
                 completed = int(msg.split('[')[1].split('/')[0])
-                unfollow_progress.update(unfollow_job, completed=completed)
+                rich_dashboard.unfollow_progress.update(rich_dashboard.unfollow_job, completed=completed)
         def filter(self, record):
             self.console.log('Filtered: ', record.getMessage())
             self.do_filter(record.getMessage())
             return False
-    filter_ = LogFilter(live.console)
+
+    filter_ = LogFilter(rich_dashboard.console)
 
     mainLogger = logging.getLogger('__main__')
     mainLogger.setLevel(logging.DEBUG)
@@ -85,12 +64,12 @@ with Live(dashboard_table, refresh_per_second=10) as live:
 
         # Login
         login_text = Text('Login')
-        overall_task.add_row(login_text)
+        rich_dashboard.overall_task.add_row(login_text)
         session.login()
         login_text.append(' ✅')
 
         # Unfollow
-        overall_task.add_row(unfollow_progress)
+        rich_dashboard.overall_task.add_row(rich_dashboard.unfollow_progress)
         if parameters.do_unfollow :
             session.unfollow_users(amount=unfollow_amount,
                                 allFollowing=True,
