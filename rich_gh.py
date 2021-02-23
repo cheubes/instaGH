@@ -33,8 +33,36 @@ with RichLogging([logging.getLogger('__main__'), logging.getLogger(parameters.us
         session.set_do_follow(enabled=True, percentage=100, times=1)
         session.set_dont_include(parameters.dont_include)
         session.set_skip_users(skip_private=True, skip_no_profile_pic=True, skip_business=True)
-        with rl.console.status('Login...', spinner='earth'):
-            session.login()
+
+        # Login
+        # with rl.console.status('Login...', spinner='earth'):
+        session.login()
+
+        with rl.console.status('Unfollowing...', spinner='earth'):
+            if parameters.do_unfollow :
+                rl.console.log('Start unfollow')
+                session.unfollow_users(amount=5,
+                                        allFollowing=True,
+                                        style="FIFO",
+                                        unfollow_after=24*60*60,
+                                        sleep_delay=sleep_delay)
+
+
+        # rl.console.log('Login done')
+        # with Progress() as progress:
+        #     rl.console.log('Start progress')
+        #     task1 = progress.add_task("[red]Unfollowing...", total=5)
+        #     # Unfollow
+        #     rl.console.log('do_unfollow: ', parameters.do_unfollow)
+        #     if parameters.do_unfollow :
+        #         rl.console.log('Start unfollow')
+        #         session.unfollow_users(amount=5,
+        #                                 allFollowing=True,
+        #                                 style="FIFO",
+        #                                 unfollow_after=24*60*60,
+        #                                 sleep_delay=sleep_delay)
+
+
     except NoSuchElementException:
         # The problem is with a change in IG page layout
         log_file = "{}.html".format(time.strftime("%Y%m%d-%H%M%S"))
