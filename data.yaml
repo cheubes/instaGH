@@ -3,8 +3,8 @@ password: password          # (instagram password)
 target_list: ['user1', 'user2', 'user3', 'user4']
 target_size: 2
 do_follow_likers: True
-do_follow_followers: True
-do_follow_following: True
+do_follow_followers: True   # Not implemented
+do_follow_following: True   # Not implemented
 do_unfollow: True
 dont_include_list: ['user1', 'user2', 'user3', 'user4']
 headless_browser: True

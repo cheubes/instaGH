@@ -43,14 +43,26 @@ class Parameters(NamedTuple):
     def __str__(self):
         result = ''
         result += '🧔 %s\n' % self.username
-        result += '🎯 %s\n' % self.targets
-        result += '%s Follow likers\n' % ('✅' if self.do_follow_likers else '❌')
-        result += '%s Follow followers\n' % ('✅' if self.do_follow_followers else '❌')
-        result += '%s Follow following\n' % ('✅' if self.do_follow_following else '❌')
-        result += '%s Unfollow\n' % ('✅' if self.do_unfollow else '❌')
         result += '%s Headless browser\n' % ('✅' if self.headless_browser else '❌')
-        result += 'Unfollow %s following\n' % self.unfollow_amount
-        result += 'Grab %s photo(s)\n' % self.photos_grab_amount
-        result += 'Follow %s liker(s) per photo\n' % self.follow_likers_per_photo
-        result += 'Sleep delay: %s' % self.sleep_delay
+        result += '\n'
+        idx = 0
+        for target in self.targets :
+            if idx == 0 :
+                result += '🎯 %s\n' % target
+            else :
+                result += '   %s\n' % target
+            idx += 1
+        result += '\n'
+        result += '%s Unfollow' % ('✅' if self.do_unfollow else '❌')
+        if self.do_unfollow :
+            result += ' : %s' % self.unfollow_amount
+        result += '\n\n'
+        result += '%s Follow likers\n' % ('✅' if self.do_follow_likers else '❌')
+        if self.do_follow_likers :
+            result += '     - Grab %s photo(s) per target\n' % self.photos_grab_amount
+            result += '     - Follow %s liker(s) per photo\n' % self.follow_likers_per_photo
+        # result += '%s Follow followers (not implemented)\n' % ('✅' if self.do_follow_followers else '❌')
+        # result += '%s Follow following (not implemented)\n' % ('✅' if self.do_follow_following else '❌')
+        result += '\n'
+        result += '😴 Sleep delay: %s' % self.sleep_delay
         return result
