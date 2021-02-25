@@ -1,4 +1,5 @@
 from contextlib import contextmanager
+from datetime import datetime
 
 from rich.console import Console
 from rich.panel import Panel
@@ -14,6 +15,7 @@ C = Const()
 
 class ReportPanel:
 
+    start_time = datetime.now()
     session_infos = {
         C.UNFOLLOWED_KEY: 0,
         C.UNFOLLOWED_ON_KEY: 0,
@@ -25,6 +27,16 @@ class ReportPanel:
 
     def __rich__(self) -> Panel:
         report_table = Table.grid()
+        report_table.add_row('Started on ' + self.start_time.ctime())
+
+        elapsed_time = datetime.now() - self.start_time
+        minutes = divmod(elapsed_time.seconds, 60)
+        hours = divmod(minutes[0], 60)
+
+        report_table.add_row(
+            f'Time elapsed: {hours[0]:02d}[blink]:[/blink]{hours[1]:02d}[blink]:[/blink]{minutes[1]:02d}'
+        )
+        report_table.add_row('')
         report_table.add_row(
             'Unfollowed [bold blue]'
             + str(self.session_infos[C.UNFOLLOWED_KEY])

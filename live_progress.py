@@ -1,5 +1,6 @@
 import logging
 from sys import exit as clean_exit
+from datetime import datetime
 
 from rich.live import Live
 from instapy import InstaPy
@@ -13,6 +14,9 @@ C = Const()
 parameters = Parameters.load_from_args()
 rich_dashboard = RichDashboard(parameters)
 rich_filter = RichLogFilter(rich_dashboard, [logging.getLogger(parameters.username)])
+
+print(datetime.now())
+print(datetime.now().ctime())
 
 with Live(
     rich_dashboard.dashboard_table,
