@@ -44,34 +44,40 @@ class Parameters(NamedTuple):
         )
         return self
 
+    def eval_param(self, param):
+        if param:
+            return '✅'
+        else:
+            return '❌'
+
     def __str__(self):
         result = ''
-        result += '🧔  %s\n' % self.username
-        result += '%s  Headless browser\n' % ('✅' if self.headless_browser else '❌')
+        result += f'🧔  {self.username}\n'
+        result += f'{self.eval_param(self.headless_browser)}  Headless browser\n'
         result += '\n'
         idx = 0
         for target in self.targets:
             if idx == 0:
-                result += '🎯  %s\n' % target
+                result += f'🎯  {target}\n'
             else:
-                result += '    %s\n' % target
+                result += f'    {target}\n'
             idx += 1
         result += '\n'
-        result += '%s  Unfollow' % ('✅' if self.do_unfollow else '❌')
+        result += f'{self.eval_param(self.do_unfollow)}  Unfollow'
         if self.do_unfollow:
             result += ' : [cyan]%s[/cyan]' % self.unfollow_amount
         result += '\n\n'
-        result += '%s  Follow likers\n' % ('✅' if self.do_follow_likers else '❌')
+        result += f'{self.eval_param(self.do_follow_likers)}  Follow likers\n'
         if self.do_follow_likers:
-            result += '     - Grab [cyan]%s[/cyan] photo(s) per target\n' % self.photos_grab_amount
+            result += f'     - Grab [cyan]{self.photos_grab_amount}[/cyan] photo(s) per target\n'
             result += (
-                '     - Follow [cyan]%s[/cyan] liker(s) per photo\n' % self.follow_likers_per_photo
+                f'     - Follow [cyan]{self.follow_likers_per_photo}[/cyan] liker(s) per photo\n'
             )
-        # result += '%s Follow followers (not implemented)\n' % (
-        #     '✅' if self.do_follow_followers else '❌'
+        # result += (
+        #     f'{self.eval_param(self.do_follow_followers)} Follow followers (not implemented)\n'
         # )
-        # result += '%s Follow following (not implemented)\n' % (
-        #     '✅' if self.do_follow_following else '❌'
+        # result += (
+        #     f'{self.eval_param(self.do_follow_following)} Follow following (not implemented)\n'
         # )
         result += '\n'
         result += '😴  Sleep delay: [cyan]%s[/cyan]' % self.sleep_delay

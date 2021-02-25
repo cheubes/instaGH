@@ -27,7 +27,7 @@ class ReportPanel:
 
     def __rich__(self) -> Panel:
         report_table = Table.grid()
-        report_table.add_row('Started on [cyan]' + self.start_time.ctime() + '[/cyan]')
+        report_table.add_row(f'Started on [cyan]{self.start_time.ctime()}[/cyan]')
 
         elapsed_time = datetime.now() - self.start_time
         minutes = divmod(elapsed_time.seconds, 60)
@@ -38,28 +38,20 @@ class ReportPanel:
         )
         report_table.add_row('')
         report_table.add_row(
-            'Unfollowed [bold cyan]'
-            + str(self.session_infos[C.UNFOLLOWED_KEY])
-            + '[/bold cyan] / [cyan]'
-            + str(self.session_infos[C.UNFOLLOWED_ON_KEY])
-            + '[/cyan] user(s)'
+            f'Unfollowed [bold cyan]{str(self.session_infos[C.UNFOLLOWED_KEY])}[/bold cyan]'
+            + f' / [cyan]{str(self.session_infos[C.UNFOLLOWED_ON_KEY])}[/cyan] user(s)'
         )
         report_table.add_row('')
         report_table.add_row(
-            'Followed [bold cyan]'
-            + str(self.session_infos[C.FOLLOWED_KEY])
-            + '[/bold cyan] / [cyan]'
-            + str(self.session_infos[C.FOLLOWED_ON_KEY])
-            + '[/cyan] user(s)'
+            f'Followed [bold cyan]{str(self.session_infos[C.FOLLOWED_KEY])}[/bold cyan]'
+            + f' / [cyan]{str(self.session_infos[C.FOLLOWED_ON_KEY])}[/cyan] user(s)'
         )
         report_table.add_row(
-            '  - Already Followed: [bold cyan]'
-            + str(self.session_infos[C.ALREADY_FOLLOWED_KEY])
+            f'  - Already Followed: [bold cyan]{str(self.session_infos[C.ALREADY_FOLLOWED_KEY])}'
             + '[/bold cyan]'
         )
         report_table.add_row(
-            '  - Not valid user(s): [bold cyan]'
-            + str(self.session_infos[C.NOT_VALID_USER_KEY])
+            f'  - Not valid user(s): [bold cyan]{str(self.session_infos[C.NOT_VALID_USER_KEY])}'
             + '[/bold cyan]'
         )
         return Panel(report_table, title='Report', border_style='blue', padding=(1, 1))
@@ -92,7 +84,7 @@ class RichDashboard:
 
     @contextmanager
     def log_step(self, step_name):
-        step_text = Text(step_name + ' ... ')
+        step_text = Text(f'{step_name} ... ')
         self.progress_table.add_row(step_text)
         yield
         step_text.append(' ✅')
