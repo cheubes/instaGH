@@ -15,9 +15,6 @@ parameters = Parameters.load_from_args()
 rich_dashboard = RichDashboard(parameters)
 rich_filter = RichLogFilter(rich_dashboard, [logging.getLogger(parameters.username)])
 
-print(datetime.now())
-print(datetime.now().ctime())
-
 with Live(
     rich_dashboard.dashboard_table,
     console=rich_dashboard.console,

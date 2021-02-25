@@ -59,16 +59,20 @@ class Parameters(NamedTuple):
         result += '\n'
         result += '%s  Unfollow' % ('✅' if self.do_unfollow else '❌')
         if self.do_unfollow:
-            result += ' : [blue]%s[/blue]' % self.unfollow_amount
+            result += ' : [cyan]%s[/cyan]' % self.unfollow_amount
         result += '\n\n'
         result += '%s  Follow likers\n' % ('✅' if self.do_follow_likers else '❌')
         if self.do_follow_likers:
-            result += '     - Grab [blue]%s[/blue] photo(s) per target\n' % self.photos_grab_amount
+            result += '     - Grab [cyan]%s[/cyan] photo(s) per target\n' % self.photos_grab_amount
             result += (
-                '     - Follow [blue]%s[/blue] liker(s) per photo\n' % self.follow_likers_per_photo
+                '     - Follow [cyan]%s[/cyan] liker(s) per photo\n' % self.follow_likers_per_photo
             )
-        # result += '%s Follow followers (not implemented)\n' % ('✅' if self.do_follow_followers else '❌')
-        # result += '%s Follow following (not implemented)\n' % ('✅' if self.do_follow_following else '❌')
+        # result += '%s Follow followers (not implemented)\n' % (
+        #     '✅' if self.do_follow_followers else '❌'
+        # )
+        # result += '%s Follow following (not implemented)\n' % (
+        #     '✅' if self.do_follow_following else '❌'
+        # )
         result += '\n'
-        result += '😴  Sleep delay: [blue]%s[/blue]' % self.sleep_delay
+        result += '😴  Sleep delay: [cyan]%s[/cyan]' % self.sleep_delay
         return result

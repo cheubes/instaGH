@@ -27,40 +27,40 @@ class ReportPanel:
 
     def __rich__(self) -> Panel:
         report_table = Table.grid()
-        report_table.add_row('Started on ' + self.start_time.ctime())
+        report_table.add_row('Started on [cyan]' + self.start_time.ctime() + '[/cyan]')
 
         elapsed_time = datetime.now() - self.start_time
         minutes = divmod(elapsed_time.seconds, 60)
         hours = divmod(minutes[0], 60)
 
         report_table.add_row(
-            f'Time elapsed: {hours[0]:02d}[blink]:[/blink]{hours[1]:02d}[blink]:[/blink]{minutes[1]:02d}'
+            f'Time elapsed: [cyan]{hours[0]:02d}:{hours[1]:02d}:{minutes[1]:02d}[/cyan]'
         )
         report_table.add_row('')
         report_table.add_row(
-            'Unfollowed [bold blue]'
+            'Unfollowed [bold cyan]'
             + str(self.session_infos[C.UNFOLLOWED_KEY])
-            + '[/bold blue] / [blue]'
+            + '[/bold cyan] / [cyan]'
             + str(self.session_infos[C.UNFOLLOWED_ON_KEY])
-            + '[/blue] user(s)'
+            + '[/cyan] user(s)'
         )
         report_table.add_row('')
         report_table.add_row(
-            'Followed [bold blue]'
+            'Followed [bold cyan]'
             + str(self.session_infos[C.FOLLOWED_KEY])
-            + '[/bold blue] / [blue]'
+            + '[/bold cyan] / [cyan]'
             + str(self.session_infos[C.FOLLOWED_ON_KEY])
-            + '[/blue] user(s)'
+            + '[/cyan] user(s)'
         )
         report_table.add_row(
-            '  - Already Followed: [bold blue]'
+            '  - Already Followed: [bold cyan]'
             + str(self.session_infos[C.ALREADY_FOLLOWED_KEY])
-            + '[/bold blue]'
+            + '[/bold cyan]'
         )
         report_table.add_row(
-            '  - Not valid user(s): [bold blue]'
+            '  - Not valid user(s): [bold cyan]'
             + str(self.session_infos[C.NOT_VALID_USER_KEY])
-            + '[/bold blue]'
+            + '[/bold cyan]'
         )
         return Panel(report_table, title='Report', border_style='blue', padding=(1, 1))
 
