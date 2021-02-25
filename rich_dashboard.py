@@ -50,7 +50,7 @@ class ReportPanel:
             + str(self.session_infos[C.NOT_VALID_USER_KEY])
             + '[/bold blue]'
         )
-        return Panel.fit(report_table, title='Report', border_style='blue', padding=(1, 1))
+        return Panel(report_table, title='Report', border_style='blue', padding=(1, 1))
 
 
 class RichDashboard:
@@ -71,10 +71,10 @@ class RichDashboard:
 
         self.console = Console()
         self.progress_table = Table.grid()
-        self.dashboard_table = Table.grid()
+        self.dashboard_table = Table.grid(expand=True)
         self.dashboard_table.add_row(
-            Panel.fit(str(parameters), title='Parameters', border_style='blue', padding=(1, 1)),
-            Panel.fit(self.progress_table, title='Progress', border_style='blue', padding=(1, 1)),
+            Panel(str(parameters), title='Parameters', border_style='blue', padding=(1, 1)),
+            Panel(self.progress_table, title='Progress', border_style='blue', padding=(1, 1)),
             self.report_panel,
         )
 
