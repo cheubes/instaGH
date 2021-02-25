@@ -33,6 +33,14 @@ class RichLogFilter(logging.Filter):
             unfollow_job = self.rich_dashboard.progress_bars[C.UNFOLLOW_STEP_KEY][C.JOB_KEY]
             unfollow_progress.update(unfollow_job, completed=completed)
             self.rich_dashboard.report_panel.session_infos[C.UNFOLLOWED_KEY] = completed
+        if msg.find('Total people unfollowed') >= 0:
+            completed = int(msg.split(':')[1].strip())
+            unfollow_progress = self.rich_dashboard.progress_bars[C.UNFOLLOW_STEP_KEY][
+                C.PROGRESS_KEY
+            ]
+            unfollow_job = self.rich_dashboard.progress_bars[C.UNFOLLOW_STEP_KEY][C.JOB_KEY]
+            unfollow_progress.update(unfollow_job, completed=completed)
+            self.rich_dashboard.report_panel.session_infos[C.UNFOLLOWED_KEY] = completed
         if msg.startswith('Total Follow'):
             follow_progress = self.rich_dashboard.progress_bars[C.FOLLOW_STEP_KEY][C.PROGRESS_KEY]
             follow_job = self.rich_dashboard.progress_bars[C.FOLLOW_STEP_KEY][C.JOB_KEY]
