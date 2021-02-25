@@ -14,7 +14,12 @@ C = Const()
 
 class ReportPanel:
 
-    session_infos = {'unfollowed': 0, 'followed': 0, 'already_followed': 0, 'not_valid_users': 0}
+    session_infos = {
+        C.UNFOLLOWED_KEY: 0,
+        C.FOLLOWED_KEY: 0,
+        C.ALREADY_FOLLOWED_KEY: 0,
+        C.NOT_VALID_USER_KEY: 0,
+    }
 
     def __rich__(self) -> Panel:
         report_table = Table.grid()
