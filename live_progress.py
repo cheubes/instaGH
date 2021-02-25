@@ -21,22 +21,25 @@ with Live(
     refresh_per_second=10,
 ):
 
-    # get an InstaPy session
-    with rich_dashboard.log_step('Begin session'):
-        session = InstaPy(
-            username=parameters.username,
-            password=parameters.password,
-            headless_browser=parameters.headless_browser,
-            bypass_security_challenge_using='email',
-            want_check_browser=True,
-            show_logs=False,
-        )
-        # general settings
-        session.set_do_like(enabled=False, percentage=0)
-        session.set_do_comment(enabled=False, percentage=0)
-        session.set_do_follow(enabled=True, percentage=100, times=1)
-        session.set_dont_include(parameters.dont_include)
-        session.set_skip_users(skip_private=True, skip_no_profile_pic=True, skip_business=True)
+    try:
+        # get an InstaPy session
+        with rich_dashboard.log_step('Begin session'):
+            session = InstaPy(
+                username=parameters.username,
+                password=parameters.password,
+                headless_browser=parameters.headless_browser,
+                bypass_security_challenge_using='email',
+                want_check_browser=True,
+                show_logs=False,
+            )
+            # general settings
+            session.set_do_like(enabled=False, percentage=0)
+            session.set_do_comment(enabled=False, percentage=0)
+            session.set_do_follow(enabled=True, percentage=100, times=1)
+            session.set_dont_include(parameters.dont_include)
+            session.set_skip_users(skip_private=True, skip_no_profile_pic=True, skip_business=True)
+    except KeyboardInterrupt:
+        clean_exit('You have exited successfully.')
 
     try:
 
