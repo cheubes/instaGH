@@ -16,7 +16,9 @@ class ReportPanel:
 
     session_infos = {
         C.UNFOLLOWED_KEY: 0,
+        C.UNFOLLOWED_ON_KEY: 0,
         C.FOLLOWED_KEY: 0,
+        C.FOLLOWED_ON_KEY: 0,
         C.ALREADY_FOLLOWED_KEY: 0,
         C.NOT_VALID_USER_KEY: 0,
     }
@@ -26,13 +28,17 @@ class ReportPanel:
         report_table.add_row(
             'Unfollowed [bold blue]'
             + str(self.session_infos[C.UNFOLLOWED_KEY])
-            + '[/bold blue] user(s)'
+            + '[/bold blue] / [blue]'
+            + str(self.session_infos[C.UNFOLLOWED_ON_KEY])
+            + '[/blue] user(s)'
         )
         report_table.add_row('')
         report_table.add_row(
             'Followed [bold blue]'
             + str(self.session_infos[C.FOLLOWED_KEY])
-            + '[/bold blue] user(s)'
+            + '[/bold blue] / [blue]'
+            + str(self.session_infos[C.FOLLOWED_ON_KEY])
+            + '[/blue] user(s)'
         )
         report_table.add_row(
             '  - Already Followed: [bold blue]'
@@ -56,6 +62,13 @@ class RichDashboard:
     report_panel = ReportPanel()
 
     def __init__(self, parameters):
+        self.report_panel.session_infos[C.UNFOLLOWED_ON_KEY] = parameters.unfollow_amount
+        self.report_panel.session_infos[C.FOLLOWED_ON_KEY] = (
+            parameters.photos_grab_amount
+            * parameters.follow_likers_per_photo
+            * len(parameters.targets)
+        )
+
         self.console = Console()
         self.progress_table = Table.grid()
         self.dashboard_table = Table.grid()

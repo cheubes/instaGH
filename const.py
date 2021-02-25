@@ -14,8 +14,16 @@ class Const(object):
         return 'unfollowed'
 
     @constant
+    def UNFOLLOWED_ON_KEY():
+        return 'unfollowed_on'
+
+    @constant
     def FOLLOWED_KEY():
         return 'followed'
+
+    @constant
+    def FOLLOWED_ON_KEY():
+        return 'followed_on'
 
     @constant
     def ALREADY_FOLLOWED_KEY():
