@@ -1,3 +1,7 @@
+"""
+Rich dashboard for insta_gh InstaPy template.
+"""
+
 from contextlib import contextmanager
 from datetime import datetime
 
@@ -13,7 +17,8 @@ from const import Const
 C = Const()
 
 
-class ReportPanel:
+class ReportPanel:  # pylint: disable=R0903
+    """Panel to display global report information in a Live context."""
 
     start_time = datetime.now()
     session_infos = {
@@ -58,6 +63,7 @@ class ReportPanel:
 
 
 class RichDashboard:
+    """Live rich dashboard for insta_gh InstaPy template logging."""
 
     console = None
     dashboard_table = None
@@ -84,6 +90,7 @@ class RichDashboard:
 
     @contextmanager
     def log_step(self, step_name):
+        """Context manager to log a step begin and completion."""
         step_text = Text(f'{step_name} ... ')
         self.progress_table.add_row(step_text)
         yield
@@ -91,6 +98,7 @@ class RichDashboard:
 
     @contextmanager
     def progress_step(self, step_key, step_name, total):
+        """Context manager to show a progress bar during a step execution."""
         step_progress = Progress(
             '{task.description}',
             SpinnerColumn(),

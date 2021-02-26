@@ -1,17 +1,22 @@
+"""
+InstaPy template written by @cheubes
+
+This template provide a rich console interface thanks to the rich library by @willmcgugan
+"""
+
 import logging
 from sys import exit as clean_exit
-from datetime import datetime
 
 from rich.live import Live
 from instapy import InstaPy
 
 from const import Const
-from parameters import Parameters
+from parameters import load_from_args
 from rich_dashboard import RichDashboard
 from rich_log_filter import RichLogFilter
 
 C = Const()
-parameters = Parameters.load_from_args()
+parameters = load_from_args()
 rich_dashboard = RichDashboard(parameters)
 rich_filter = RichLogFilter(rich_dashboard, [logging.getLogger(parameters.username)])
 
@@ -77,8 +82,8 @@ with Live(
                     interact=False,
                 )
 
-    except Exception:
-        rich_filter.logger.exception('Exception catched')
+    except Exception:  # pylint: disable=W0703
+        rich_filter.logger.exception('Something went wrong...')
     except KeyboardInterrupt:
         clean_exit('You have exited successfully.')
     finally:

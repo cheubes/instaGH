@@ -1,3 +1,7 @@
+"""
+Log filter for insta_gh InstaPy template.
+"""
+
 import logging
 from rich.logging import RichHandler
 
@@ -7,11 +11,16 @@ C = Const()
 
 
 class RichLogFilter(logging.Filter):
+    """
+    This log filter:
+        - Reemit logs on rich handler in a live console
+        - Update steps progress bars based on log content
+    """
 
     rich_dashboard = None
     logger = None
 
-    def __init__(self, rich_dashboard, loggers):
+    def __init__(self, rich_dashboard, loggers):  # pylint: disable=W0231
         self.rich_dashboard = rich_dashboard
         logging.basicConfig(
             level='INFO',
@@ -25,18 +34,21 @@ class RichLogFilter(logging.Filter):
             logger.addFilter(self)
 
     def update_unfollow_job(self, completed):
+        """Update the unfollow job progress bar completion."""
         unfollow_progress = self.rich_dashboard.progress_bars[C.UNFOLLOW_STEP_KEY][C.PROGRESS_KEY]
         unfollow_job = self.rich_dashboard.progress_bars[C.UNFOLLOW_STEP_KEY][C.JOB_KEY]
         unfollow_progress.update(unfollow_job, completed=completed)
         self.rich_dashboard.report_panel.session_infos[C.UNFOLLOWED_KEY] = completed
 
     def update_follow_job(self, info_key):
+        """Update the follow job progress bar completion."""
         follow_progress = self.rich_dashboard.progress_bars[C.FOLLOW_STEP_KEY][C.PROGRESS_KEY]
         follow_job = self.rich_dashboard.progress_bars[C.FOLLOW_STEP_KEY][C.JOB_KEY]
         follow_progress.advance(follow_job)
         self.rich_dashboard.report_panel.session_infos[info_key] += 1
 
     def do_filter(self, msg):
+        """Update steps progress bars based on log content."""
         if msg.startswith('Ongoing Unfollow'):
             completed = int(msg.split('[')[1].split('/')[0]) - 1
             self.update_unfollow_job(completed)

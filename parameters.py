@@ -1,11 +1,49 @@
+"""
+insta_gh parameters utility
+"""
 import argparse
 import os
-import yaml
 import random
 from typing import NamedTuple
+import yaml
+
+
+def load_from_args():
+    """Load parameters from the yaml file passed in args."""
+    parser = argparse.ArgumentParser()
+    parser.add_argument('data_file', help='Yaml file to get parameters from.')
+    args = parser.parse_args()
+    # Loading data
+    current_path = os.path.abspath(os.path.dirname(__file__))
+    data = yaml.safe_load(open('%s/%s' % (current_path, args.data_file)))
+    parameters = Parameters(
+        data['username'],
+        data['password'],
+        random.sample(data['target_list'], data['target_size']),
+        data['do_follow_likers'],
+        data['do_follow_followers'],
+        data['do_follow_following'],
+        data['do_unfollow'],
+        data['dont_include_list'],
+        data['headless_browser'],
+        data['unfollow_amount'],
+        data['photos_grab_amount'],
+        data['follow_likers_per_photo'],
+        data['sleep_delay'],
+    )
+    return parameters
+
+
+def eval_param(param):
+    """Returns emoji representation of a boolean param for display purpose."""
+    if param:
+        return '✅'
+    return '❌'
 
 
 class Parameters(NamedTuple):
+    """insta_gh parameters tuple."""
+
     username: str
     password: str
     targets: list
@@ -20,40 +58,10 @@ class Parameters(NamedTuple):
     follow_likers_per_photo: int
     sleep_delay: int
 
-    def load_from_args():
-        parser = argparse.ArgumentParser()
-        parser.add_argument('data_file', help='Yaml file to get parameters from.')
-        args = parser.parse_args()
-        # Loading data
-        current_path = os.path.abspath(os.path.dirname(__file__))
-        data = yaml.safe_load(open('%s/%s' % (current_path, args.data_file)))
-        self = Parameters(
-            data['username'],
-            data['password'],
-            random.sample(data['target_list'], data['target_size']),
-            data['do_follow_likers'],
-            data['do_follow_followers'],
-            data['do_follow_following'],
-            data['do_unfollow'],
-            data['dont_include_list'],
-            data['headless_browser'],
-            data['unfollow_amount'],
-            data['photos_grab_amount'],
-            data['follow_likers_per_photo'],
-            data['sleep_delay'],
-        )
-        return self
-
-    def eval_param(self, param):
-        if param:
-            return '✅'
-        else:
-            return '❌'
-
     def __str__(self):
         result = ''
         result += f'🧔  {self.username}\n'
-        result += f'{self.eval_param(self.headless_browser)}  Headless browser\n'
+        result += f'{eval_param(self.headless_browser)}  Headless browser\n'
         result += '\n'
         idx = 0
         for target in self.targets:
@@ -63,11 +71,11 @@ class Parameters(NamedTuple):
                 result += f'    {target}\n'
             idx += 1
         result += '\n'
-        result += f'{self.eval_param(self.do_unfollow)}  Unfollow'
+        result += f'{eval_param(self.do_unfollow)}  Unfollow'
         if self.do_unfollow:
             result += ' : [cyan]%s[/cyan]' % self.unfollow_amount
         result += '\n\n'
-        result += f'{self.eval_param(self.do_follow_likers)}  Follow likers\n'
+        result += f'{eval_param(self.do_follow_likers)}  Follow likers\n'
         if self.do_follow_likers:
             result += f'     - Grab [cyan]{self.photos_grab_amount}[/cyan] photo(s) per target\n'
             result += (

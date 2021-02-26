@@ -1,3 +1,6 @@
+# pylint: disable=all
+
+
 def constant(f):
     def fset(self, value):
         raise TypeError

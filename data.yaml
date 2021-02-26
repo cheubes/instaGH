@@ -1,7 +1,7 @@
-username: user              # (instagram user)
+username: user              # (instagram user name)
 password: password          # (instagram password)
 target_list: ['user1', 'user2', 'user3', 'user4']
-target_size: 2
+target_size: 2              # Number of user to randomly pick from the targets list
 do_follow_likers: True
 do_follow_followers: True   # Not implemented
 do_follow_following: True   # Not implemented
