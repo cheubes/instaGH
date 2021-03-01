@@ -1,15 +1,17 @@
-username: user              # (instagram user name)
-password: password          # (instagram password)
-target_list: ['user1', 'user2', 'user3', 'user4']
-target_size: 2              # Number of user to randomly pick from the targets list
-do_follow_likers: True
-do_follow_followers: True   # Not implemented
-do_follow_following: True   # Not implemented
-do_unfollow: True
-dont_include_list: ['user1', 'user2', 'user3', 'user4']
-unfollow_after: 48  # in hours
-headless_browser: True
-unfollow_amount: 200
-photos_grab_amount: 5
-follow_likers_per_photo: 20
-sleep_delay: 600
+username: user # Instagram user name.
+password: password # Instagram password.
+target_list: ['user1', 'user2', 'user3', 'user4'] # List of targeted users for the follow likers step.
+target_size: 2 # Number of user to randomly pick from the targets list.
+do_follow_likers: True # Enable follow likers step.
+do_follow_followers: True # Not implemented
+do_follow_following: True # Not implemented
+do_unfollow: True # Enable unfollow step.
+dont_include_list: ['user1', 'user2', 'user3', 'user4'] # List of user not to unfollow.
+unfollow_after: 48  # Unfollow only if a user has been following for this amount of time (in hours).
+headless_browser: True # Enable InstaPy to run background.
+unfollow_amount: 200 # Maximum number of people to unfollow.
+photos_grab_amount: 5 # Number of photos to grab from each target user to get likers from.
+follow_likers_per_photo: 20 # Number of likers to follow per photo.
+sleep_delay: 600 # Used to define break time after 10 follows (in seconds).
+
+# The maximum of user followed will be target_size * photos_grab_amount * follow_likers_per_photo.
