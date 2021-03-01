@@ -122,3 +122,4 @@ class RichDashboard:
         }
         self.progress_table.add_row(step_progress)
         yield
+        step_progress.update(step_job, completed=step_progress.tasks[0].total)
