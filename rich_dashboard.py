@@ -111,7 +111,7 @@ class RichDashboard:
         """Context manager to show a progress bar during a step execution."""
         step_progress = Progress(
             '{task.description}',
-            SpinnerColumn(),
+            SpinnerColumn(spinner_name='earth'),
             BarColumn(),
             TextColumn('[progress.percentage]{task.percentage:>3.0f}%'),
         )
