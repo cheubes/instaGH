@@ -7,6 +7,7 @@ do_follow_followers: True   # Not implemented
 do_follow_following: True   # Not implemented
 do_unfollow: True
 dont_include_list: ['user1', 'user2', 'user3', 'user4']
+unfollow_after: 48  # in hours
 headless_browser: True
 unfollow_amount: 200
 photos_grab_amount: 5

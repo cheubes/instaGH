@@ -61,7 +61,7 @@ with Live(
                     amount=parameters.unfollow_amount,
                     allFollowing=True,
                     style='FIFO',
-                    unfollow_after=24 * 60 * 60,
+                    unfollow_after=parameters.unfollow_after * 60 * 60,
                     sleep_delay=parameters.sleep_delay,
                 )
         # Follow likers

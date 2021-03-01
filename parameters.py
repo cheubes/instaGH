@@ -25,6 +25,7 @@ def load_from_args():
         data['do_follow_following'],
         data['do_unfollow'],
         data['dont_include_list'],
+        data['unfollow_after'],
         data['headless_browser'],
         data['unfollow_amount'],
         data['photos_grab_amount'],
@@ -52,6 +53,7 @@ class Parameters(NamedTuple):
     do_follow_following: bool
     do_unfollow: bool
     dont_include: list
+    unfollow_after: int
     headless_browser: bool
     unfollow_amount: int
     photos_grab_amount: int
@@ -73,7 +75,8 @@ class Parameters(NamedTuple):
         result += '\n'
         result += f'{eval_param(self.do_unfollow)}  Unfollow'
         if self.do_unfollow:
-            result += ' : [cyan]%s[/cyan]' % self.unfollow_amount
+            result += f' : [cyan]{self.unfollow_amount}[/cyan]'
+            result += f'\n     after [cyan]{self.unfollow_after}[/cyan] hours'
         result += '\n\n'
         result += f'{eval_param(self.do_follow_likers)}  Follow likers\n'
         if self.do_follow_likers:
@@ -88,5 +91,5 @@ class Parameters(NamedTuple):
         #     f'{self.eval_param(self.do_follow_following)} Follow following (not implemented)\n'
         # )
         result += '\n'
-        result += '😴  Sleep delay: [cyan]%s[/cyan]' % self.sleep_delay
+        result += f'😴  Sleep delay: [cyan]{self.sleep_delay}[/cyan]'
         return result
