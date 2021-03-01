@@ -40,6 +40,13 @@ class RichLogFilter(logging.Filter):
         unfollow_progress.update(unfollow_job, completed=completed)
         self.rich_dashboard.report_panel.session_infos[C.UNFOLLOWED_KEY] = completed
 
+    def update_unfollow_job_total(self, total):
+        """Update the unfollow job progress bar completion."""
+        unfollow_progress = self.rich_dashboard.progress_bars[C.UNFOLLOW_STEP_KEY][C.PROGRESS_KEY]
+        unfollow_job = self.rich_dashboard.progress_bars[C.UNFOLLOW_STEP_KEY][C.JOB_KEY]
+        unfollow_progress.update(unfollow_job, total=total)
+        self.rich_dashboard.report_panel.session_infos[C.UNFOLLOWED_ON_KEY] = total
+
     def update_follow_job(self, info_key):
         """Update the follow job progress bar completion."""
         follow_progress = self.rich_dashboard.progress_bars[C.FOLLOW_STEP_KEY][C.PROGRESS_KEY]
@@ -59,6 +66,9 @@ class RichLogFilter(logging.Filter):
             self.rich_dashboard.report_panel.session_infos[C.ALREADY_UNFOLLOWED_KEY] += 1
         if msg.find('user is in the list whitelist') >= 0:
             self.rich_dashboard.report_panel.session_infos[C.WHITE_LIST_USER_KEY] += 1
+        if msg.find('There are less users to unfollow than you have requested') >= 0:
+            total = int(msg.split(':')[1].split('/')[0].strip())
+            self.update_unfollow_job_total(total)
         if msg.startswith('Total Follow'):
             self.update_follow_job(C.FOLLOWED_KEY)
         if msg.find('Not a valid user') >= 0:
