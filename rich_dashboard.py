@@ -23,6 +23,8 @@ class ReportPanel:  # pylint: disable=R0903
     start_time = datetime.now()
     session_infos = {
         C.UNFOLLOWED_KEY: 0,
+        C.ALREADY_UNFOLLOWED_KEY: 0,
+        C.WHITE_LIST_USER_KEY: 0,
         C.UNFOLLOWED_ON_KEY: 0,
         C.FOLLOWED_KEY: 0,
         C.FOLLOWED_ON_KEY: 0,
@@ -45,6 +47,14 @@ class ReportPanel:  # pylint: disable=R0903
         report_table.add_row(
             f'Unfollowed [bold cyan]{str(self.session_infos[C.UNFOLLOWED_KEY])}[/bold cyan]'
             + f' / [cyan]{str(self.session_infos[C.UNFOLLOWED_ON_KEY])}[/cyan] user(s)'
+        )
+        report_table.add_row(
+            f'  - Already unfollowed: [bold cyan]{str(self.session_infos[C.ALREADY_UNFOLLOWED_KEY])}'
+            + '[/bold cyan]'
+        )
+        report_table.add_row(
+            f'  - White list user(s): [bold cyan]{str(self.session_infos[C.WHITE_LIST_USER_KEY])}'
+            + '[/bold cyan]'
         )
         report_table.add_row('')
         report_table.add_row(

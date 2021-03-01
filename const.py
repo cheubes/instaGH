@@ -21,6 +21,14 @@ class Const(object):
         return 'unfollowed_on'
 
     @constant
+    def ALREADY_UNFOLLOWED_KEY():
+        return 'already_unfollowed'
+
+    @constant
+    def WHITE_LIST_USER_KEY():
+        return 'white_list_user'
+
+    @constant
     def FOLLOWED_KEY():
         return 'followed'
 

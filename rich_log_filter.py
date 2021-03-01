@@ -55,6 +55,10 @@ class RichLogFilter(logging.Filter):
         if msg.find('Total people unfollowed') >= 0:
             completed = int(msg.split(':')[1].strip())
             self.update_unfollow_job(completed)
+        if msg.find('Already unfollowed') >= 0:
+            self.rich_dashboard.report_panel.session_infos[C.ALREADY_UNFOLLOWED_KEY] += 1
+        if msg.find('user is in the list whitelist') >= 0:
+            self.rich_dashboard.report_panel.session_infos[C.WHITE_LIST_USER_KEY] += 1
         if msg.startswith('Total Follow'):
             self.update_follow_job(C.FOLLOWED_KEY)
         if msg.find('Not a valid user') >= 0:
