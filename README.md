@@ -1,6 +1,6 @@
 # instaGH
 
-Simple [InstaPy](https://github.com/timgrossmann/InstaPy) template that implements a unfollow / follow likers pattern.
+Simple [InstaPy](https://github.com/InstaPy/InstaPy) template that implements a unfollow / follow likers pattern.
 
 This template provide a rich console interface thanks to the [Rich API](https://github.com/willmcgugan/rich).
 
